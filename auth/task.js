@@ -2,8 +2,8 @@
 
 const welcome = document.getElementById('welcome'); // приветственный баннер
 const user_ID = document.getElementById('user_id');
-const inputLogin = document.querySelector('input[name="login"]'); // элемент <input name="login"
-const inputPassword = document.querySelector('input[name="password"]'); //элемент <input name="password"
+/*const inputLogin = document.querySelector('input[name="login"]'); // элемент <input name="login"
+const inputPassword = document.querySelector('input[name="password"]'); //элемент <input name="password"*/
 const signoutBtn = document.getElementById('signout__btn'); // кнопка "Войти"
 const signinBtn = document.getElementById('signin__btn');   // кнопка "деавторизация"
 
@@ -16,8 +16,9 @@ async function getAuthiriz() {  // асинхронная функция пол�
       body: new FormData(form) // формируем тело отправляемого запрса в качестве формы данных
     });
     
-    inputLogin.value = ""; // очистка поля <input name="login"
-    inputPassword.value = ""; // очистка поля <input name="password"
+    /*inputLogin.value = ""; // очистка поля <input name="login"
+    inputPassword.value = ""; // очистка поля <input name="password"*/
+    form.reset(); // очистка полей формы
     
         
     if (response.ok) {  // если ответ от сервера успешный
@@ -33,7 +34,9 @@ async function getAuthiriz() {  // асинхронная функция пол�
             console.log('Success= ' + data.success); // КОНТРОЛЬНАЯ ТОЧКА
             console.log('User ID= ' + userId);  // КОНТРОЛЬНАЯ ТОЧКА
             
-            welcome.classList.add('welcome_active');  // активируем (открываем) приветственный баннер               
+            form.classList.add('welcome'); // скрываем форму авторизации
+            welcome.classList.add('welcome_active');  // активируем (открываем) приветственный баннер 
+            signoutBtn.classList.add('welcome_active'); // открываем кнопку "деавторизация"              
 
         } else alert('Неверный логин/пароль');
     
@@ -43,12 +46,13 @@ async function getAuthiriz() {  // асинхронная функция пол�
     
   };
 
-    inputLogin.value = ""; // очистка поля <input name="login" при перезагрузке страницы
-    inputPassword.value = ""; // очистка поля <input name="password" при перезагрузке страницы
-
     if (localStorage.getItem('user_id')) {
         user_ID.innerText = localStorage.getItem('user_id');
-        welcome.classList.add('welcome_active');
+        form.classList.add('welcome'); // скрываем форму авторизации
+        welcome.classList.add('welcome_active'); // открываем окно приветствия
+    } else {
+        signoutBtn.classList.add('welcome'); // скрываем кнопку "деавторизация"
+        welcome.classList.remove('welcome_active');  // скрываем приветственный баннер
     };
   
     signinBtn.addEventListener('click', (e) => { // обработчик события submit для формы (АВТОРИЗАЦИЯ)
@@ -58,7 +62,7 @@ async function getAuthiriz() {  // асинхронная функция пол�
 
     signoutBtn.onclick = (e) => { //ДЕВТОРИЗАЦИЯ
         e.preventDefault();   //  сброс браузерного обработчика события "submit" по умолчанию
-        delete localStorage.user_id; // очистка локадьного хранилища
-        welcome.classList.remove('welcome_active');
+        delete localStorage.user_id; // очистка локального хранилища
+        welcome.classList.remove('welcome_active'); // скрываем приветственный баннер
         alert('Локальное хранилище очищено!')
     };
