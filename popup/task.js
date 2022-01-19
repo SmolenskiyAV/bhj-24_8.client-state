@@ -48,12 +48,12 @@ function getCookie(name) { // функция возвращает куки с у
 
   //deleteCookie('savedModalStatus'); // КОНТРОЛЬНАЯ ТОЧКА (очистка "печеньки")
 
-if (getCookie('savedModalStatus') !== 'active') {   // если модалка ранее не открывалась в браузере
+if (getCookie('savedModalStatus') !== 'active') {   // если модалка ранее не закрывалась в браузере
     subscribeModal.classList.add('modal_active'); // открываем модалку
-    setCookie('savedModalStatus', 'active'); // делаем запись о событии открытия модалки в "печеньку"
 };
 
 modalClose.onclick = () => {
     subscribeModal.classList.remove('modal_active'); // клик по крестику "закрыть окно"
+    setCookie('savedModalStatus', 'active'); // делаем запись о событии закрытия модалки в "печеньку"
 };
 
